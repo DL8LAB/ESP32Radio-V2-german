@@ -4,7 +4,7 @@ gpio_00 = uppreset = 1
 gpio_12 = upvolume = 2
 gpio_13 = downvolume = 2
 gpio_14 = stop
-gpio_17 = resume
+# gpio_17 = resume
 gpio_34 = station = icecast.omroep.nl:80/radio1-bb-mp3
 #
 # MQTT settings
@@ -47,6 +47,9 @@ ir_40BF = upvolume = 2
 ir_C03F = downvolume = 2
 # GPIO pinnings
 pin_ir = 35                                          # GPIO Pin number for IR receiver VS1838B
+#
+pin_sd_cs = 17                                       # GPIO Pin number for SD card
+#
 pin_enc_clk = 25                                     # GPIO Pin number for rotary encoder "CLK"
 pin_enc_dt = 26                                      # GPIO Pin number for rotary encoder "DT"
 pin_enc_sw = 27                                      # GPIO Pin number for rotary encoder "SW"
@@ -55,9 +58,9 @@ pin_tft_cs = 15                                      # GPIO Pin number for TFT "
 pin_tft_dc = 2                                       # GPIO Pin number for TFT "DC"
 #
 pin_vs_cs = 5                                        # GPIO Pin number for VS1053 "CS"
-pin_vs_dcs = 32                                      # GPIO Pin number for VS1053 "DCS"
+pin_vs_dcs = 16                                      # GPIO Pin number for VS1053 "DCS"
 pin_vs_dreq = 4                                      # GPIO Pin number for VS1053 "DREQ"
 #
 pin_i2s_bck = 5                                      # GPIO Pin number for I2S "BCK"
-pin_i2s_lck = 32                                     # GPIO Pin number for I2S "L(R)CK"
+pin_i2s_lck = 16                                     # GPIO Pin number for I2S "L(R)CK"
 pin_i2s_din = 4                                      # GPIO Pin number for I2S "DIN"
