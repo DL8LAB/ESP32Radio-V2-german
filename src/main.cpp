@@ -1883,8 +1883,8 @@ void readIOprefs()
     { "pin_enc_up",    &ini_block.enc_up_pin,       -1 }, // ZIPPY B5 side switch up
     { "pin_enc_dwn",   &ini_block.enc_dwn_pin,      -1 }, // ZIPPY B5 side switch down
     { "pin_enc_sw",    &ini_block.enc_sw_pin,       27 },
-    { "pin_tft_cs",    &ini_block.tft_cs_pin,       -1 }, // Display SPI version
-    { "pin_tft_dc",    &ini_block.tft_dc_pin,       -1 }, // Display SPI version
+    { "pin_tft_cs",    &ini_block.tft_cs_pin,       15 }, // Display SPI version
+    { "pin_tft_dc",    &ini_block.tft_dc_pin,        2 }, // Display SPI version
     { "pin_tft_scl",   &ini_block.tft_scl_pin,      -1 }, // Display I2C version
     { "pin_tft_sda",   &ini_block.tft_sda_pin,      -1 }, // Display I2C version
     { "pin_tft_bl",    &ini_block.tft_bl_pin,       -1 }, // Display backlight
