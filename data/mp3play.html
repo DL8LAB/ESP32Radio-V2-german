@@ -20,11 +20,11 @@
    <label for="seltrack"><big>MP3 Files auf der SD-Karte:</big></label>
    <br>
    <select class="select selectw" onChange="trackreq(this)" id="seltrack">
-    <option value="-1">Select a track here</option>
+    <option value="-1">W&auml;hle einenTitel</option>
    </select>
    <br><br>
    <button class="button" onclick="httpGet('downtrack=1', true)">PREV</button>
-   <button class="button" onclick="httpGet('track=-1', true)">RANDOM</button>
+   <button class="button" onclick="httpGet('track=-1', true)">ZUFALL</button>
    <button class="button" onclick="httpGet('uptrack=1', true)">NEXT</button>
    <br>
    <button class="button" onclick="httpGet('downvolume=2', false)">VOL-</button>
