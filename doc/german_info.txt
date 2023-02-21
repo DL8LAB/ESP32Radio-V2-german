@@ -1,2 +1,2 @@
 In this fork I translatet the most entries of the webpages to german language.
-My hardware configuration is seen in the circuit diagram
+My hardware configuration is seen in the circuit diagram.
