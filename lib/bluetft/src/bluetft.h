@@ -15,6 +15,8 @@
 #define INIPARS     ini_block.tft_cs_pin, ini_block.tft_dc_pin  // Prameters for dsp_begin
 #define DISPLAYTYPE "BLUETFT"
 
+
+
 // Color definitions for the TFT screen (if used)
 // TFT has bits 6 bits (0..5) for RED, 6 bits (6..11) for GREEN and 4 bits (12..15) for BLUE.
 #define BLACK   ST7735_BLACK
@@ -25,7 +27,28 @@
 #define MAGENTA RED | BLUE
 #define YELLOW  RED | GREEN
 #define WHITE   RED | BLUE | GREEN
-#define GRAY    0x7bf0
+#define GRAY    0x7bf0                      // (0x7bf0)
+
+/*
+
+
+// wahlweise diesen Bereich oder den darueber freigeben
+// Meine Color definitions für Invertiertes KMR 1,8" SPI Display   (GreenTab)
+// TFT has bits 6 bits (0..5) for RED, 6 bits (6..11) for GREEN and 4 bits (12..15) for BLUE.
+#define BLACK   ST7735_BLACK
+#define RED    ST7735_BLUE                  // getauscht mit BLUE  ######Claus
+#define BLUE     ST7735_RED                 // getauscht mit RED   ######Claus
+//#define RED    ST7735_RED 
+//#define BLUE     ST7735_BLUE
+#define GREEN   ST7735_GREEN
+#define CYAN    GREEN | BLUE
+#define MAGENTA RED | BLUE
+#define YELLOW  RED | GREEN
+#define WHITE   RED | BLUE | GREEN
+#define GRAY    0xffff                     // (0x7bf0)
+
+*/
+
 
 #define DEFTXTSIZ  1                                  // Default text size
 
@@ -64,6 +87,10 @@ extern Adafruit_ST7735*     bluetft_tft ;                                 // For
 #define dsp_update(a)                                                     // Updates to the physical screen
 #define dsp_usesSPI()           true                                      // Does use SPI
 #define dsp_begin               bluetft_dsp_begin                         // Init driver
+// ####Claus Aufruf von main.cpp, Zeile 2704. Nur für invertierte TFT's aus China Kommentierung wegnehmen
+//#define dsp_invertDisplay()     bluetft_tft->invertDisplay(false);         // true==invertiere das Display (Makro) - für invertiertes KMR 1,8" SPI Display,
+                                                                          
+
 
 extern scrseg_struct     bluetft_tftdata[TFTSECS] ;                       // Screen divided in segments
 
