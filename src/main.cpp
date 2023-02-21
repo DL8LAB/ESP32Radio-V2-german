@@ -2,6 +2,7 @@
 //*  ESP32_Radio V2 -- Webradio receiver for ESP32, VS1053 MP3 module and optional display.         *
 //*                    By Ed Smallenburg.                                                           *
 //***************************************************************************************************
+// Von hier: https://github.com/Edzelf/ESP32Radio-V2
 // ESP32 libraries used:  See platformio.ini
 // A library for the VS1053 (for ESP32) is not available (or not easy to find).  Therefore
 // a class for this module is derived from the maniacbug library and integrated in this sketch.
@@ -96,7 +97,7 @@
 // 01-11-2022, ES: Support of AI Audio kit V2.1.
 //
 // Define the version number, the format used is the HTTP standard.
-#define VERSION     "Thu, 03 Nov 2022 13:00:00 GMT"
+#define VERSION     "Do, 16. Feb 2023 14:00:00 GMT"
 //
 #include <Arduino.h>                                      // Standard include for Platformio Arduino projects
 #include <WiFi.h>
@@ -319,7 +320,7 @@ enum datamode_t { INIT = 0x1, HEADER = 0x2, DATA = 0x4,      // State for datast
 
 // Global variables
 int               numSsid ;                              // Number of available WiFi networks
-bool              ota = false ;                          // Allow OTA updates
+bool              ota = true ;                          // Allow OTA updates
 preset_info_t     presetinfo ;                           // Info about the current or new station
 ini_struct        ini_block ;                            // Holds configurable data
 AsyncWebServer    cmdserver ( 80 ) ;                     // Instance of embedded webserver, port 80
@@ -1067,7 +1068,7 @@ void IRAM_ATTR timer100()
   sv int16_t   oldclickcount = 0 ;                // To detect difference
 
   spftrigger = true ;                             // Activate spfuncs
-  if ( ++count10sec == 100  )                     // 10 seconds passed?
+  if ( ++count10sec == 100  )                     // 10 seconds passed?   
   {
     timer10sec() ;                                // Yes, do 10 second procedure
     count10sec = 0 ;                              // Reset count
@@ -1876,12 +1877,12 @@ void readIOprefs()
     int8_t      pdefault ;                                // Default pin
   };
   struct iosetting klist[] = {                            // List of I/O related keys
-    { "pin_ir",        &ini_block.ir_pin,           -1 },
-    { "pin_enc_clk",   &ini_block.enc_clk_pin,      -1 }, // Rotary encoder CLK
-    { "pin_enc_dt",    &ini_block.enc_dt_pin,       -1 }, // Rotary encoder DT
+    { "pin_ir",        &ini_block.ir_pin,           35 },
+    { "pin_enc_clk",   &ini_block.enc_clk_pin,      25 }, // Rotary encoder CLK
+    { "pin_enc_dt",    &ini_block.enc_dt_pin,       26 }, // Rotary encoder DT
     { "pin_enc_up",    &ini_block.enc_up_pin,       -1 }, // ZIPPY B5 side switch up
     { "pin_enc_dwn",   &ini_block.enc_dwn_pin,      -1 }, // ZIPPY B5 side switch down
-    { "pin_enc_sw",    &ini_block.enc_sw_pin,       -1 },
+    { "pin_enc_sw",    &ini_block.enc_sw_pin,       27 },
     { "pin_tft_cs",    &ini_block.tft_cs_pin,       -1 }, // Display SPI version
     { "pin_tft_dc",    &ini_block.tft_dc_pin,       -1 }, // Display SPI version
     { "pin_tft_scl",   &ini_block.tft_scl_pin,      -1 }, // Display I2C version
@@ -1890,10 +1891,10 @@ void readIOprefs()
     { "pin_tft_blx",   &ini_block.tft_blx_pin,      -1 }, // Display backlight (inversed logic)
     { "pin_nxt_rx",    &ini_block.nxt_rx_pin,       -1 }, // NEXTION input pin
     { "pin_nxt_tx",    &ini_block.nxt_tx_pin,       -1 }, // NEXTION output pin
-    { "pin_sd_cs",     &ini_block.sd_cs_pin,        -1 }, // SD card select
-    { "pin_vs_cs",     &ini_block.vs_cs_pin,        -1 }, // VS1053 pins
-    { "pin_vs_dcs",    &ini_block.vs_dcs_pin,       -1 },
-    { "pin_vs_dreq",   &ini_block.vs_dreq_pin,      -1 },
+    { "pin_sd_cs",     &ini_block.sd_cs_pin,        17 }, // SD card select
+    { "pin_vs_cs",     &ini_block.vs_cs_pin,         5 }, // (5) VS1053 pins
+    { "pin_vs_dcs",    &ini_block.vs_dcs_pin,       16 }, // (16) VS1053 pins
+    { "pin_vs_dreq",   &ini_block.vs_dreq_pin,       4 }, // (4) VS1053 pins
     { "pin_shutdown",  &ini_block.shutdown_pin,     -1 }, // Amplifier shut-down pin
     { "pin_shutdownx", &ini_block.shutdownx_pin,    -1 }, // Amplifier shut-down pin (inversed logic)
     { "pin_i2s_bck",   &ini_block.i2s_bck_pin,      -1 }, // I2S interface pins
@@ -1903,9 +1904,9 @@ void readIOprefs()
     { "pin_spi_sck",   &ini_block.spi_sck_pin,      -1 },
     { "pin_spi_miso",  &ini_block.spi_miso_pin,     -1 },
     { "pin_spi_mosi",  &ini_block.spi_mosi_pin,     -1 },
-    { "pin_eth_mdc",   &ini_block.eth_mdc_pin,      23 },
-    { "pin_eth_mdio",  &ini_block.eth_mdio_pin,     18 },
-    { "pin_eth_power", &ini_block.eth_power_pin,    16 },
+    { "pin_eth_mdc",   &ini_block.eth_mdc_pin,      -1 }, //(23)
+    { "pin_eth_mdio",  &ini_block.eth_mdio_pin,     -1 }, //(18)
+    { "pin_eth_power", &ini_block.eth_power_pin,    -1 }, //(16)
   #else
     { "pin_spi_sck",   &ini_block.spi_sck_pin,      18 }, // Note: different for AI Audio kit (14)
     { "pin_spi_miso",  &ini_block.spi_miso_pin,     19 }, // Note: different for AI Audio kit (2)
@@ -2700,6 +2701,7 @@ void setup()
   dsp_ok = dsp_begin ( INIPARS ) ;                       // Init display
   if ( dsp_ok )                                          // Init okay?
   {
+    // dsp_invertDisplay() ;                             // Display invertieren?   #####Claus  Disp. invertieren im Tab bluetft.h
     dsp_setRotation() ;                                  // Yes, use landscape format
     dsp_erase() ;                                        // Clear screen
     dsp_setTextSize ( DEFTXTSIZ ) ;                      // Small character font
@@ -2810,7 +2812,7 @@ void setup()
     }
   }
   timer = timerBegin ( 0, 80, true ) ;                   // User 1st timer with prescaler 80
-  timerAttachInterrupt ( timer, &timer100, false ) ;     // Call timer100() on timer alarm
+  timerAttachInterrupt ( timer, &timer100, true ) ;     // (false) ###Claus Interrupt Timer aktiviert.  Call timer100() on timer alarm
   timerAlarmWrite ( timer, 100000, true ) ;              // Alarm every 100 msec
   timerAlarmEnable ( timer ) ;                           // Enable the timer
   delay ( 1000 ) ;                                       // Show IP for a while
@@ -3019,7 +3021,7 @@ void handle_getprefs ( AsyncWebServerRequest *request )
 //**************************************************************************************************
 void handle_saveprefs ( AsyncWebServerRequest *request )
 {
-  String reply = "Config saved" ;                      // Default reply
+  String reply = "Konfiguration gespeichert" ;                      // Default reply
 
   writeprefs ( request ) ;                             // Write to NVS
   request->send ( 200, "text/plain", reply ) ;         // Send the reply
@@ -3102,7 +3104,7 @@ void handleSaveReq()
 {
   static uint32_t savetime = 0 ;                          // Limit save to once per 10 minutes
 
-  if ( ( millis() - savetime ) < 600000 )                 // 600 sec is 10 minutes
+  if ( ( millis() - savetime ) < 30000 )                 // (600000) 600 sec is 10 minutes
   {
     return ;
   }
@@ -4077,7 +4079,7 @@ const char* analyzeCmd ( const char* par, const char* val )
   bool               relative = false ;               // Relative argument (+ or -)
 
   blset ( true ) ;                                    // Enable backlight of TFT
-  strcpy ( reply, "Command accepted" ) ;              // Default reply
+  strcpy ( reply, "Kommando angenommen" ) ;           // Default reply
   argument = String ( par ) ;                         // Get the argument
   chomp ( argument ) ;                                // Remove comment and useless spaces
   if ( argument.length() == 0 )                       // Lege commandline (comment)?
@@ -4127,7 +4129,7 @@ const char* analyzeCmd ( const char* par, const char* val )
       ini_block.reqvol = 100 ;                        // Limit to normal values
     }
     muteflag = false ;                                // Stop possibly muting
-    sprintf ( reply, "Volume is now %d",              // Reply new volume
+    sprintf ( reply, "Volume ist jetzt %d",              // Reply new volume
               ini_block.reqvol ) ;
   }
   else if ( argument == "mute" )                      // Mute/unmute request
@@ -4144,7 +4146,7 @@ const char* analyzeCmd ( const char* par, const char* val )
   else if ( argument == "preset" )                    // (UP/DOWN)Preset station?
   {
     nextPreset ( ivalue, relative ) ;                 // Yes, set new preset
-    sprintf ( reply, "Preset is now %d",              // Reply new preset
+    sprintf ( reply, "Preset ist jetzt %d",              // Reply new preset
               presetinfo.preset ) ;
     if ( NetworkFound )
     myQueueSend ( radioqueue, &startcmd ) ;           // Signal radiofuncs()
@@ -4189,7 +4191,7 @@ const char* analyzeCmd ( const char* par, const char* val )
   }
   else if ( argument == "test" )                      // Test command
   {
-    sprintf ( reply, "Free memory is %d, chunks in queue %d, bitrate %d kbps",
+    sprintf ( reply, "Freier Speicher ist %d, Frames in der Warteschlange %d, Bitrate %d kbps",
               heapspace,
               uxQueueMessagesWaiting ( dataqueue ),
               mbitrate ) ;
@@ -4282,7 +4284,7 @@ const char* analyzeCmd ( const char* par, const char* val )
   }
   else
   {
-    sprintf ( reply, "%s called with illegal parameter: %s",
+    sprintf ( reply, "%s aufgerufen mit illegalem Parameter: %s",
               NAME, argument.c_str() ) ;
   }
   return reply ;                                      // Return reply to the caller
@@ -4302,6 +4304,7 @@ const char* analyzeCmd ( const char* par, const char* val )
 //**************************************************************************************************
 void displayinfo ( uint16_t inx )
 {
+   
   uint16_t       width = dsp_getwidth() ;                  // Normal number of colums
   scrseg_struct* p = &tftdata[inx] ;
   uint16_t len ;                                           // Length of string, later buffer length
@@ -4385,7 +4388,7 @@ void gettime()
 #if defined(DEC_VS1053) || defined(DEC_VS1003)
 //**************************************************************************************************
 //                         P L A Y T A S K  ( V S 1 0 5 3 )                                        *
-//**************************************************************************************************
+//************************************************status**************************************************
 // Play stream data from input queue. Version for VS1053.                                          *
 // Handle all I/O to VS1053B during normal playing.                                                *
 //**************************************************************************************************
