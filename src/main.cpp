@@ -3104,7 +3104,7 @@ void handleSaveReq()
 {
   static uint32_t savetime = 0 ;                          // Limit save to once per 10 minutes
 
-  if ( ( millis() - savetime ) < 30000 )                 // (600000) 600 sec is 10 minutes
+  if ( ( millis() - savetime ) < 30000 )                 // (600000) 600 sec is 10 minutes #####Claus new 30 sec
   {
     return ;
   }
